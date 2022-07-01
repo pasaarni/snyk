@@ -21,11 +21,20 @@ steps:
     serviceConnectionEndpoint: 'pasisnyk'
     testType: 'app'
     monitorWhen: 'always'
-    failOnIssues: true
+    failOnIssues: false
 
-# - script: |
-#     docker build - pasaar
-#     docker images
-#     docker images | grep pasaar
-#     sudo docker images | grep pasaar
-#     displayName: 'build docker image'
+- script: |
+    docker build - pasaar
+    docker images
+    docker images | grep pasaar
+    sudo docker images | grep pasaar
+    displayName: 'build docker image'
+
+- task: SnykSecurityScan@1
+  inputs:
+    serviceConnectionEndpoint: 'pasisnyk'
+    testType: 'container'
+    dockerImageName: 'pasaar'
+    dockerfilePath: 'Dockerfile'
+    monitorWhen: 'always'
+    failOnIssues: true
