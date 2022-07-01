@@ -1,0 +1,31 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: |
+    npm install
+    npm run build
+  displayName: 'npm install and build'
+
+- task: SnykSecurityScan@1
+  inputs:
+    serviceConnectionEndpoint: 'pasisnyk'
+    testType: 'app'
+    monitorWhen: 'always'
+    failOnIssues: true
+
+# - script: |
+#     docker build - pasaar
+#     docker images
+#     docker images | grep pasaar
+#     sudo docker images | grep pasaar
+#     displayName: 'build docker image'
